@@ -1,4 +1,9 @@
-import { Body, Request, Response } from "https://deno.land/x/oak/mod.ts";
+import {
+  Body,
+  Request,
+  Response,
+  RouteParams,
+} from "https://deno.land/x/oak/mod.ts";
 import { v4 } from "https://deno.land/std@0.82.0/uuid/mod.ts";
 
 interface Book {
@@ -34,27 +39,41 @@ export const getBooks = ({ response }: { response: Response }) => {
     message: "successful Query",
     books,
   };
-  console.log("New user getBooks");
 };
 
-export const getBook = () => {};
+export const getBook = (
+  { params, response }: { params: RouteParams; response: Response },
+) => {
+  const bookFound = books.find(book => book.id === params.id)
+  if(bookFound) {
+      response.status = 200;
+      response.body = {
+          message: 'You got a single book',
+          bookFound
+      }
+      return;
+  }
+  response.status = 404;
+  response.body = {
+      message: 'Book not found.'
+  };
+};
 
 export const createBook = async (
   { request, response }: { request: Request; response: Response },
 ) => {
-
   const body: Body = await request.body();
 
-  if(!request.hasBody) {
-      response.status = 404;
-      response.body = {
-          message: 'Body is required'
-      };
-      return;
+  if (!request.hasBody) {
+    response.status = 404;
+    response.body = {
+      message: "Body is required",
     };
+    return;
+  }
 
   const newBook: Book = await body.value;
-  newBook.id = v4.generate()
+  newBook.id = v4.generate();
 
   books.push(newBook);
 
@@ -62,7 +81,7 @@ export const createBook = async (
 
   response.body = {
     message: "New book created",
-    newBook
+    newBook,
   };
 };
 
