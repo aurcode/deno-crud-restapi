@@ -39,25 +39,30 @@ export const getBooks = ({ response }: { response: Response }) => {
 
 export const getBook = () => {};
 
-interface bookBody {
-  name: string;
-  author: string;
-  originalLanguage: string;
-}
-
 export const createBook = async (
   { request, response }: { request: Request; response: Response },
 ) => {
+
   const body: Body = await request.body();
-  const newBook: bookBody = await body.value;
-  books.push({
-    id: v4.generate(),
-    name: newBook.name,
-    author: newBook.author,
-    originalLanguage: newBook.originalLanguage,
-  });
+
+  if(!request.hasBody) {
+      response.status = 404;
+      response.body = {
+          message: 'Body is required'
+      };
+      return;
+    };
+
+  const newBook: Book = await body.value;
+  newBook.id = v4.generate()
+
+  books.push(newBook);
+
+  response.status = 200;
+
   response.body = {
-    message: "received",
+    message: "New book created",
+    newBook
   };
 };
 
