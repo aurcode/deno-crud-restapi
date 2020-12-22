@@ -13,7 +13,7 @@ interface Book {
   originalLanguage: string;
 }
 
-const books: Book[] = [
+let books: Book[] = [
   {
     id: "1",
     name: "Clean code: Style guide for agile development",
@@ -44,18 +44,18 @@ export const getBooks = ({ response }: { response: Response }) => {
 export const getBook = (
   { params, response }: { params: RouteParams; response: Response },
 ) => {
-  const bookFound = books.find(book => book.id === params.id)
-  if(bookFound) {
-      response.status = 200;
-      response.body = {
-          message: 'You got a single book',
-          bookFound
-      }
-      return;
+  const bookFound = books.find((book) => book.id === params.id);
+  if (bookFound) {
+    response.status = 200;
+    response.body = {
+      message: "You got a single book",
+      bookFound,
+    };
+    return;
   }
   response.status = 404;
   response.body = {
-      message: 'Book not found.'
+    message: "Book not found.",
   };
 };
 
@@ -87,4 +87,11 @@ export const createBook = async (
 
 export const updateBook = () => {};
 
-export const deleteBook = () => {};
+export const deleteBook = ({ params, response }: { params:RouteParams, response: Response }) => {
+  books = books.filter(book => book.id !== params.id);
+  response.status = 200;
+  response.body = {
+    message: 'Book deleted successfully',
+    books
+  }
+};

@@ -11,5 +11,6 @@ router.get("/", ({ response }) => {
 router.get("/books", indexCtrl.getBooks);
 router.get("/books/:id", indexCtrl.getBook);
 router.post("/books", indexCtrl.createBook);
+router.delete("/books/:id", indexCtrl.deleteBook);
 
 export default router;
