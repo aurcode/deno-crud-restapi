@@ -11,7 +11,7 @@ deno run --allow-net index.ts
 deno run --allow-net https://raw.githubusercontent.com/aurcode/deno-oak-crud-restapi/main/index.ts
 ```
 
-## Run by URL
+## Run by DOCKER
 ```
 docker build -t app .
 docker run -it --init -p 3000:3000 app
@@ -19,27 +19,27 @@ docker run -it --init -p 3000:3000 app
 
 # Endpoints
 
-Get All users
+Get All books
 ```
 GET      /books
 ```
 
-Get a single User by Id
+Get a single Book by Id
 ```
 GET      /books/:id
 ```
 
-Create a new User
+Create a new Book
 ```
 POST     /books/new
 ```
 
-Update an existing User by Id
+Update an existing Book by Id
 ```
 PUT      /books/:id
 ```
 
-Delete an existing User by Id
+Delete an existing Book by Id
 ```
 DELETE   /books/:id
 ```
