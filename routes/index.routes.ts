@@ -8,9 +8,11 @@ router.get("/", ({ response }) => {
   response.body = "Welcome to my API";
 });
 
-router.get("/books", indexCtrl.getBooks);
-router.get("/books/:id", indexCtrl.getBook);
-router.post("/books", indexCtrl.createBook);
-router.delete("/books/:id", indexCtrl.deleteBook);
+router
+  .get("/books", indexCtrl.getBooks)
+  .get("/books/:id", indexCtrl.getBook)
+  .post("/books", indexCtrl.createBook)
+  .put("/books/:id", indexCtrl.updateBook)
+  .delete("/books/:id", indexCtrl.deleteBook);
 
 export default router;

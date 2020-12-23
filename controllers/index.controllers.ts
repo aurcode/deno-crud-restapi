@@ -85,13 +85,42 @@ export const createBook = async (
   };
 };
 
-export const updateBook = () => {};
+export const updateBook = async (
+  { request, response, params }: {
+    request: Request;
+    response: Response;
+    params: RouteParams;
+  },
+) => {
+  const bookFound = books.find((book) => book.id === params.id);
 
-export const deleteBook = ({ params, response }: { params:RouteParams, response: Response }) => {
-  books = books.filter(book => book.id !== params.id);
+  if (!bookFound) {
+    response.status = 404;
+    response.body = {
+      message: "Book not found",
+    };
+    return;
+  }
+
+  const body: Body = await request.body();
+  const updatedBook: Book = await body.value;
+  console.log(updatedBook)
+  books = books.map((book) =>
+    book.id === params.id ? { ...book, ...updatedBook } : book
+  );
   response.status = 200;
   response.body = {
-    message: 'Book deleted successfully',
-    books
+    books,
   }
+};
+
+export const deleteBook = (
+  { params, response }: { params: RouteParams; response: Response },
+) => {
+  books = books.filter((book) => book.id !== params.id);
+  response.status = 200;
+  response.body = {
+    message: "Book deleted successfully",
+    books,
+  };
 };
