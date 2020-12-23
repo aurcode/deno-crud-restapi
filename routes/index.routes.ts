@@ -11,7 +11,7 @@ router.get("/", ({ response }) => {
 router
   .get("/books", indexCtrl.getBooks)
   .get("/books/:id", indexCtrl.getBook)
-  .post("/books", indexCtrl.createBook)
+  .post("/books/new", indexCtrl.createBook)
   .put("/books/:id", indexCtrl.updateBook)
   .delete("/books/:id", indexCtrl.deleteBook);
 
